@@ -1,0 +1,36 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Transaction {
+  id          String   @id @default(cuid())
+  title       String
+  amount      Float
+  type        String   // "income" or "expense"
+  category    String
+  date        DateTime
+  description String?
+  isRecurring Boolean  @default(false)
+  frequency   String?  // "daily", "weekly", "monthly", "yearly" for recurring transactions
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Budget {
+  id          String   @id @default(cuid())
+  category    String
+  amount      Float
+  period      String   // "weekly", "monthly", "yearly"
+  startDate   DateTime
+  endDate     DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
